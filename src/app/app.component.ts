@@ -20,7 +20,7 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     console.log("In App component ngOnInIt()");
     
-    /*
+    
     //Issue1: Use this code if dashboard route has canActivate: [AutoLoginGuard], works fine 
     //problem1 --> but it is redirecting to the original page eg:- http://localhost:4300/secureddetails will redirect to STS after login redirect to http://localhost:4300    
     //problem2 --> but Sign-out is not redirecting to logout page
@@ -28,7 +28,7 @@ export class AppComponent implements OnInit{
     this.authservice.userData$.subscribe( data => {
       console.log("userdata ==>",data);
     });
-    */
+    
 
     /*
     //Issue2: Use this code if dashboard route has canActivate: [AutoLoginGuard] 
