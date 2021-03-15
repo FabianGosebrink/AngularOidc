@@ -24,7 +24,7 @@ export function configureAuth(oidcConfigService: OidcConfigService) {
       scope: 'openid profile api1 offline_access roles',
       responseType: 'code',
       triggerAuthorizationResultEvent: true,
-      postLogoutRedirectUri: `${window.location.origin}`,
+      postLogoutRedirectUri: `${window.location.origin}/logout`,
       
       renewTimeBeforeTokenExpiresInSeconds: 0,
       silentRenew: false,
