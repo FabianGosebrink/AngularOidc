@@ -38,5 +38,9 @@ export class AuthService {
   checkAuth(): Observable<boolean>{
     return this.oidcSecurityService.checkAuth();
   }
+
+  login(): void{
+    this.oidcSecurityService.authorize({ customParams : { ui_locales: 'de-CH' }}); 
+  }
   
 }
