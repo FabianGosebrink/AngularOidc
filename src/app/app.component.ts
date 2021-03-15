@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/services/auth/auth.service';
+import { TokenService } from 'src/services/token/token.service';
 
 @Component({
   selector: 'app-root',
@@ -15,50 +16,20 @@ export class AppComponent implements OnInit{
    */
    isAuthenticated = false;
 
-  constructor(private authservice:AuthService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private authservice:AuthService, private tokenservice: TokenService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     console.log("In App component ngOnInIt()");
     
-    
-    //Issue1: Use this code if dashboard route has canActivate: [AutoLoginGuard], works fine 
-    //problem1 --> but it is redirecting to the original page eg:- http://localhost:4300/secureddetails will redirect to STS after login redirect to http://localhost:4300    
-    //problem2 --> but Sign-out is not redirecting to logout page
+    this.authservice.checkAuth().subscribe((isAuthenticated) => {
 
-    this.authservice.userData$.subscribe( data => {
-      console.log("userdata ==>",data);
+      this.authservice.IsAuthenticated$;
+      
+      console.log('app authenticated', isAuthenticated);
+      const at = this.tokenservice.getToken();
+      console.log(`Current access token is '${at}'`);
     });
     
-
-    /*
-    //Issue2: Use this code if dashboard route has canActivate: [AutoLoginGuard] 
-    //problem3 --> but it is redirecting few times STS and dashboard ( console error: Http failure response for https://localhost:5001/connect/token: 400 OK)
-    //problem4 --> but Sign-out is not redirecting to logout page
-
-    //Issue3: Use this code if dashboard route has DON'T HAVE canActivate: [AutoLoginGuard] 
-    //problem5 --> but it is redirecting to the original page eg:- accesing securedetails but afer login redirecting to dashboard
-    //problem6 --> but Sign-out is not redirecting to logout page
-
-    this.authservice.IsAuthenticated$.subscribe(data =>{
-      debugger;
-      if(data == false){
-        if ('/logout' == window.location.pathname) {
-        }
-        else{
-          this.authservice.checkAuth().subscribe( result => {
-            debugger;
-            this.isAuthenticated = result;
-            this.authservice.IsAuthenticated$;
-          });
-        }
-      }
-      else{
-        this.isAuthenticated = data;        
-      }
-    }
-    );
-    */
-
   }
   
   private navigateToStoredEndpoint() {
@@ -80,6 +51,10 @@ export class AppComponent implements OnInit{
     //this.router.navigate([menuItem], {relativeTo: this.route});
     
     this.router.navigate(['../',menuItem],{relativeTo: this.route});
+  }
+
+  login() {
+    this.authservice.login();
   }
 
   logout() {
